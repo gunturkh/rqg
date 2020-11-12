@@ -4,13 +4,15 @@ import utilStyles from "../styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts";
 import Link from "next/link";
 import Date from "../components/date";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home({ allPostsData }) {
   const [toggle, setToggle] = useState(false);
-  const [quote, setQuote] = useState(
-    "Welcome to Random Quote Generator by GunturKH!"
-  );
+  const [quote, setQuote] = useState({
+    author: "GunturKH",
+    text: "Welcome to Random Quote Generator by GunturKH!",
+  });
+  const { author, text } = quote;
   return (
     <Layout home>
       <div
@@ -27,20 +29,30 @@ export default function Home({ allPostsData }) {
           className="browser__content"
           style={{ color: toggle ? "white" : "black" }}
         >
-          <h1 style={{ textAlign: "center" }}>{quote}</h1>
-          <div>{/* <p>{quote}</p> */}</div>
+          <h1 style={{ textAlign: "center" }}>{text}</h1>
+          <h3>-{author}-</h3>
           <button
             className="generate-button"
             onClick={() => {
-              fetch("https://type.fit/api/quotes")
-                .then((res) => {
-                  return res.json();
-                })
-                .then((json) => {
-                  setQuote(
-                    json[Math.floor(Math.random() * json.length - 1)].text
-                  );
-                });
+              const ls = JSON.parse(localStorage.getItem("quotes"));
+              if (ls) {
+                const { author: quoteAuthor, text: quoteText } = ls[
+                  Math.floor(Math.random() * ls.length - 1)
+                ];
+                setQuote({ author: quoteAuthor, text: quoteText });
+              } else {
+                fetch("https://type.fit/api/quotes")
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((json) => {
+                    const { author: quoteAuthor, text: quoteText } = json[
+                      Math.floor(Math.random() * json.length - 1)
+                    ];
+                    localStorage.setItem("quotes", JSON.stringify(json));
+                    setQuote({ author: quoteAuthor, text: quoteText });
+                  });
+              }
             }}
             style={{
               marginTop: 20,
