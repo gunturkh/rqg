@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export const siteTitle = "Random Quotes Generator";
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home, style }) {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Random Quotes Generator" />
