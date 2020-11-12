@@ -32,14 +32,11 @@ export default function Home({ allPostsData }) {
           <button
             className="generate-button"
             onClick={() => {
-              console.log("New Quote!");
               fetch("https://type.fit/api/quotes")
                 .then((res) => {
-                  console.log("res: ", res);
                   return res.json();
                 })
                 .then((json) => {
-                  console.log("Json: ", json);
                   setQuote(
                     json[Math.floor(Math.random() * json.length - 1)].text
                   );
