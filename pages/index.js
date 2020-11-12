@@ -30,7 +30,7 @@ export default function Home({ allPostsData }) {
           style={{ color: toggle ? "white" : "black" }}
         >
           <h1 style={{ textAlign: "center" }}>{text}</h1>
-          <h3>-{author}-</h3>
+          <h3>- {author ? author : "Unknown"} -</h3>
           <button
             className="generate-button"
             onClick={() => {
